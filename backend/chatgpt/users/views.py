@@ -9,7 +9,8 @@ from users.serializers import (
                             ChangePasswordSerializer,
                             EmailSerilizer,
                             SendToEmailSerializer,
-                            ResetPasswordSerializer
+                            ResetPasswordSerializer,
+                            ChangeUserDataSerializer
 )
 from django.shortcuts import get_object_or_404
 import jwt, datetime
@@ -107,7 +108,10 @@ class AuthorizationViewSet(viewsets.ModelViewSet):
         return response
     
     def get_user(cls, request):
-        return checkAuthentication(request)
+        user = User.objects.get(pk=checkAuthentication(request).data.get('id'))
+        serializer = ChangeUserDataSerializer(instance=user)
+        # return checkAuthentication(request)
+        return Response(data=serializer.data)
 
 
     @swagger_auto_schema(operation_summary="change password", request_body=ChangePasswordSerializer)
@@ -200,4 +204,22 @@ class AuthorizationViewSet(viewsets.ModelViewSet):
         fp.delete()
         return Response(data={'message' : 'Success'})
         
+    @swagger_auto_schema(operation_summary="changing the data of user", request_body=ChangeUserDataSerializer)
+    def change_data_user(cls, request):
+        if not isAuthenticated(request):
+            return Response(data={"detail" : "permission denied"})
+        
+        serializer = ChangeUserDataSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            user = User.objects.get(pk=checkAuthentication(request).data.get('id'))
+            User.objects.update()
+            user.name = request.data['name']
+            user.surname = request.data['surname']
+            user.email = request.data['email']
+            user.save()
+            serializer = ChangeUserDataSerializer(instance=user)
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
         

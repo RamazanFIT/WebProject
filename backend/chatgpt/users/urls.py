@@ -14,4 +14,5 @@ urlpatterns = [
     # path('send_the_email/', AuthorizationViewSet.as_view({'post': 'send_the_email'}), name="authorization"),
     path('send_code/', AuthorizationViewSet.as_view({'post': 'forgot_password'}), name="authorization"),
     path('reset_password/', AuthorizationViewSet.as_view({'post': 'reset_password'}), name="authorization"),
+    path('change_data_user/', AuthorizationViewSet.as_view({'post': 'change_data_user'}), name="authorization"),
 ]

@@ -60,3 +60,7 @@ class ResetPasswordSerializer(serializers.Serializer):
 class SendToEmailSerializer(serializers.Serializer):
     email = serializers.EmailField()
     
+class ChangeUserDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['name', 'surname', 'email']
