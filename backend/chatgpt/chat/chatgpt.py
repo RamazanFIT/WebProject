@@ -3,7 +3,7 @@ from django.conf import settings
 
 API_KEY = settings.API_KEY
 
-openai.api_key = API_KEY
+openai.api_key = 'sk-proj-hYwFoN4XKKMHtEOKTV3LT3BlbkFJdOzZkH0nbhzjAIy8mR7J'
 
 def generate_response(request_text):
     response = openai.Completion.create(
