@@ -1,6 +1,6 @@
 media/
 poetry.lock
 db.sqlite3
-__pycache__/
-migrations/
+# __pycache__/
+# migrations/
 # .env
