@@ -1,0 +1,45 @@
+
+  <!-- Bootstrap CSS -->
+
+  <!-- Custom CSS -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .welcome-container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      padding-top: 100px;
+    }
+    .logo {
+      margin-bottom: 20px;
+    }
+    .btn-start {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 30px;
+      border-radius: 25px;
+      font-size: 18px;
+    }
+    .btn-start:hover {
+      background-color: #0056b3;
+    }
+  </style>
+
+
+
+<div class="welcome-container">
+<!--  <img src="rent4_logo.png" alt="Rent4 Logo" class="logo">-->
+  <h1>Welcome to Rent4</h1>
+  <p class="lead">Your go-to platform for renting anything you need!</p>
+  <a href="#" class="btn btn-start">Get Started</a>
+</div>
+
+  <div *ngFor="let movie of movies">
+<!--    <p>we have</p>-->
+    {{ movie.name }}
+  </div>
+<!--  {{movie}}-->
+
