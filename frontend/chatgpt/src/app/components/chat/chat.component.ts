@@ -24,10 +24,8 @@ export class ChatComponent {
         this.chats = chats;
         if (Array.isArray(this.chats)) {
           this.chatLabels = this.chats.map(chat => chat.label).join(', ');
-        }
-        else {
+        } else {
           console.error('Chats data is not an array:', this.chats);
-
         }
       },
       error => {
@@ -35,4 +33,5 @@ export class ChatComponent {
       }
     );
   }
+
 }

@@ -1,5 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import viewsets, status
+
+from users.serializers import ChangeUserDataSerializer
 from .models import ChatgptHistory, ChatGroup
 from .serializers import (ChatgptHistorySerializer, ChatGptSerializer, ChatGroupSerializer, FullChatGroupSerializer)
 from django.shortcuts import get_object_or_404
@@ -92,8 +94,11 @@ class ChatGptViewSet(viewsets.ModelViewSet):
             return Response(data={"detail" : "some error"}, status=status.HTTP_404_NOT_FOUND)
         
     def get_all_chats(cls, request):
-        if not isAuthenticated(request):
-            return Response(data={"detail" : "permission denied"})
+        # if not isAuthenticated(request):
+        #     # return Response(data={"detail" : "permission denied"})
+        #     user = User.objects.get(pk=checkAuthentication(request).data.get('id'))
+        #     serializer = ChangeUserDataSerializer(instance=user)
+        #     return Response(data=serializer.data)
         user = User.objects.get(pk=checkAuthentication(request).data.get('id'))
         chats = ChatGroup.objects.filter(user=user)
         serializer = FullChatGroupSerializer(instance=chats, many=True)

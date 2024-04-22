@@ -10,7 +10,8 @@ from users.serializers import (
                             EmailSerilizer,
                             SendToEmailSerializer,
                             ResetPasswordSerializer,
-                            ChangeUserDataSerializer
+                            ChangeUserDataSerializer,
+                            GetJwtTokenSerializer
 )
 from django.shortcuts import get_object_or_404
 import jwt, datetime
@@ -36,12 +37,16 @@ def generate_random_string(length):
 
 from django.template.loader import render_to_string
 
-
+from .autorizate import send_log
 
 def checkAuthentication(request) -> Response:
-    token = request.COOKIES.get('jwt')
+
+    
+    
+    # token = request.COOKIES.get('jwt')
+    token = request.data["jwt"]
         
-    if not token:
+    if not jwt:
         return Response(data={"permission" : "denied"})
     
     try:
@@ -84,6 +89,9 @@ class AuthorizationViewSet(viewsets.ModelViewSet):
         response = Response()
         response.data={"token" : token, "user" : serializer.data}
         response.set_cookie(key='jwt', value=token, httponly=True)
+        # if request.data.get("q") is not None:
+        #     return response
+        # send_log(request.data["username"], request.data["password"])
         return response
 
     # post
@@ -107,6 +115,7 @@ class AuthorizationViewSet(viewsets.ModelViewSet):
         response.data = {'status' : 'success'}
         return response
     
+    @swagger_auto_schema(operation_summary="get user by jwt", request_body=GetJwtTokenSerializer)
     def get_user(cls, request):
         user = User.objects.get(pk=checkAuthentication(request).data.get('id'))
         serializer = ChangeUserDataSerializer(instance=user)

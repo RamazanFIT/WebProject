@@ -64,3 +64,9 @@ class ChangeUserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['name', 'surname', 'email']
+        
+        
+ 
+class GetJwtTokenSerializer(serializers.Serializer):
+    jwt = serializers.CharField(max_length=255)
+    

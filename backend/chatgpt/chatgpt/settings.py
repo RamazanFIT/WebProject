@@ -30,7 +30,8 @@ SECRET_KEY = 'django-insecure-93uwk2u65il59e((daqdwysebj6rr@w-$=il1#il#634f@9b^q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+SESSION_COOKIE_DOMAIN = '127.0.0.1'
 
 
 # Application definition
@@ -87,6 +88,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chatgpt.wsgi.application'
 
+SESSION_COOKIE_HTTPONLY = False
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SECURE = False
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

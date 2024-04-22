@@ -3,8 +3,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, tap} from "rxjs";
 import {Chat} from "./models/chat.model";
 import {AuthToken} from "./models/token";
+// @ts-ignore
 import { CookieService } from 'ngx-cookie-service';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,15 +16,40 @@ export class ApiService {
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   getAllChats(): Observable<Chat[]> {
-    return this.http.get<Chat[]>(this.BASE_URL+'/api/chatgpt/chats');
+    const jwtToken = this.getJwtFromCookie(); // Получаем JWT токен из куки
+    const headers = new HttpHeaders()
+      .set('X-CSRFToken', 'J9CVAv52vGrMojuKpJxoTAkHkT6OyxiTZFboFWkxg0oqANlbLWetYGcqWiGV9YUs')
+      .set('Cookie', `jwt=${jwtToken}`); // Устанавливаем куки с JWT токеном в заголовки запроса
+
+    return this.http.get<Chat[]>(`${this.BASE_URL}/api/chatgpt/chats/`, { headers });
   }
 
-  login(username: string, password: string): Observable<AuthToken> {
-    return this.http.post<AuthToken>(this.BASE_URL+'/api/authorization/login/', { username, password }).pipe(
-      tap((authToken: AuthToken) => {
-        // Store token in cookie
-        this.cookieService.set('authToken', JSON.stringify(authToken));
-      })
+  private getJwtFromCookie(): string {
+    const jwtToken = this.getCookie('jwt');
+    return jwtToken ? jwtToken : '';
+  }
+
+
+  private getCookie(name: string): string {
+    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return cookieValue ? cookieValue.pop()!.split('=')[1] : '';
+  }
+
+
+  login(username: string, password: string): Observable<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('X-CSRFToken', 'J9CVAv52vGrMojuKpJxoTAkHkT6OyxiTZFboFWkxg0oqANlbLWetYGcqWiGV9YUs');
+
+    const body = {
+      username: username,
+      password: password
+    };
+
+    return this.http.post<any>(
+      `${this.BASE_URL}/api/authorization/login/`,
+      body,
+      { headers: headers, withCredentials: true }
     );
   }
 
