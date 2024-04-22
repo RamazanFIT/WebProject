@@ -5,20 +5,8 @@ import {ApiService} from "./api.service";
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers: [ApiService],
+  // providers: [ApiService],
 })
 export class AppComponent {
-  movies = [{name:'test'}, {name:'test2'}];
 
-  constructor(private api: ApiService) {
-    this.getChats();
-  }
-
-  getChats = ()=>{
-    this.api.getAllChats().subscribe(
-      data => {
-        this.movies = data;
-      }, error => console.log(error)
-    )
-  }
 }
